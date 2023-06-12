@@ -1,6 +1,6 @@
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-
+import { resolve } from "path"
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
   plugins: [vue()],
@@ -12,6 +12,11 @@ export default defineConfig(async () => ({
   server: {
     port: 1420,
     strictPort: true,
+  },
+  resolve: {
+    alias: {
+      "@": resolve(__dirname, "./src") // 路径别名
+    }
   },
   // to make use of `TAURI_DEBUG` and other env variables
   // https://tauri.studio/v1/api/config#buildconfig.beforedevcommand
