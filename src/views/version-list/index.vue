@@ -1,71 +1,53 @@
 <script lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import { defineComponent, reactive } from "vue";
+import {defineComponent, onMounted, reactive, ref} from "vue";
+import {invoke} from "@tauri-apps/api/tauri";
+import {VersionControl} from "./model";
 
 export default defineComponent({
-    name:'version-list',
-    setup(){
-        const columns = [{
-      title: 'Name',
-      dataIndex: 'name',
+  name: 'version-list',
+  setup() {
+    onMounted(()=>{
+      getVersionControlData()
+    })
+    const columns = [{
+      title: '版本',
+      dataIndex: 'version',
     }, {
-      title: 'Salary',
-      dataIndex: 'salary',
+      title: '上线时间',
+      dataIndex: 'releaseTime',
     }, {
-      title: 'Address',
-      dataIndex: 'address',
-    }, {
-      title: 'Email',
-      dataIndex: 'email',
-    }, {
-      title: 'Optional',
+      title: '操作',
       slotName: 'optional'
     }];
-    const data = reactive([{
-      key: '1',
-      name: 'Jane Doe',
-      salary: 23000,
-      address: '32 Park Road, London',
-      email: 'jane.doe@example.com'
-    }, {
-      key: '2',
-      name: 'Alisa Ross',
-      salary: 25000,
-      address: '35 Park Road, London',
-      email: 'alisa.ross@example.com'
-    }, {
-      key: '3',
-      name: 'Kevin Sandra',
-      salary: 22000,
-      address: '31 Park Road, London',
-      email: 'kevin.sandra@example.com'
-    }, {
-      key: '4',
-      name: 'Ed Hellen',
-      salary: 17000,
-      address: '42 Park Road, London',
-      email: 'ed.hellen@example.com'
-    }, {
-      key: '5',
-      name: 'William Smith',
-      salary: 27000,
-      address: '62 Park Road, London',
-      email: 'william.smith@example.com'
-    }]);
-        return {
-            columns,
-            data
-        }
+    const data = ref<VersionControl[]>([])
+    const pagination = reactive({
+      current: 1,
+      pageSize: 10
+    })
+    const getVersionControlData = async () => {
+      data.value = await invoke("get_version_control_list_by_pagination", {
+        currentPage: pagination.current,
+        pageSize: pagination.pageSize
+      });
+      console.log(data.value)
     }
+    return {
+      columns,
+      data,
+      pagination
+    }
+  }
 })
 
 </script>
 
 <template>
-  <a-table :columns="columns" :data="data">
+  <a-table key="version" :pagination="pagination" :columns="columns" :data="data">
     <template #optional="{ record }">
-      <a-button @click="$modal.info({ title:'Name', content:record.name })">view</a-button>
+      <a-space>
+        <a-button @click="$modal.info({ title:'Name', content:record.name })">进入配置</a-button>
+        <a-button @click="$modal.info({ title:'Name', content:record.name })">导出配置</a-button>
+      </a-space>
     </template>
   </a-table>
 </template>

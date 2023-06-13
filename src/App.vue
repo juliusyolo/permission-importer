@@ -1,21 +1,14 @@
-<script lang="ts">
-import { defineComponent } from "vue";
-export default defineComponent({
-  setup() {
-const themeMedia = window.matchMedia("(prefers-color-scheme: light)");
-    
-// if (themeMedia.matches) {
-//         console.log('light')
-//     } else {
-//         console.log('dark')
-//     }
-    return {
-
-    }
-  }
+<script setup lang="ts">
+import {defineComponent, onMounted} from "vue";
+import {useDark} from "@vueuse/core";
+onMounted(() => {
+  useDark({
+    selector: 'body',
+    attribute: 'arco-theme',
+    valueDark: 'dark',
+    valueLight: 'light',
+  })
 })
-
-
 </script>
 
 <template>
