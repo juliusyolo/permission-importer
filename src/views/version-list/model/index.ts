@@ -13,4 +13,6 @@ export interface PaginationResult<T> {
   data: Array<T>,
 }
 
+
 export type VersionControlPaginationResult = PaginationResult<VersionControl>;
+
