@@ -5,32 +5,32 @@ import PageConfiguration from '@/views/system-management/page-configuration/inde
 import RelationPermission from '@/views/system-management/relation-permission/index.vue';
 
 const routes = [
-    { 
+    {
         path: '/',
         name:'version-list',
-        component: VersionList 
+        component: VersionList
     },
-    { 
+    {
         path: '/version-list',
         name:'version-list',
-        component: VersionList 
+        component: VersionList
     },
-    { 
-        path: '/system-management', 
+    {
+        path: '/system-management',
         name: 'system-management',
         component: SystemManagement,
         children:[
             {
-                path:'/page-configuration',
+                path:'page-configuration',
                 name:'page-configuration',
                 component: PageConfiguration,
             },
             {
-                path:'/relation-permission',
+                path:'relation-permission',
                 name:'relation-permission',
                 component: RelationPermission,
             },
-        ]  
+        ]
     },
     {
         path: '/:catchAll(.*)',
