@@ -52,7 +52,7 @@ export default defineComponent({
       currentMenuKey.value = key
       router.push({path: key, query: query.value})
     }
-    return {
+    return{
       version,
       query,
       menus,

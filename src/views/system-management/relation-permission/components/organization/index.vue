@@ -1,5 +1,5 @@
 <template>
-  <a-card class="general-card" :title="$t('organization.form.query.name')">
+  <a-card class="general-card" :title="t('organization.form.query.name')">
     <a-row>
       <a-col :flex="1">
         <a-form
@@ -10,30 +10,30 @@
         >
           <a-row :gutter="16">
             <a-col :span="12">
-              <a-form-item field="name" :label="$t('organization.form.name')">
+              <a-form-item field="name" :label="t('organization.form.name')">
                 <a-input
                   v-model="formModel.organizationName"
-                  :placeholder="$t('organization.form.name.placeholder')"
+                  :placeholder="t('organization.form.name.placeholder')"
                 />
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-form-item field="name" :label="$t('organization.form.code')">
+              <a-form-item field="name" :label="t('organization.form.code')">
                 <a-input
                   v-model="formModel.organizationCode"
-                  :placeholder="$t('organization.form.code.placeholder')"
+                  :placeholder="t('organization.form.code.placeholder')"
                 />
               </a-form-item>
             </a-col>
             <a-col :span="12">
               <a-form-item
                 field="status"
-                :label="$t('organization.form.status')"
+                :label="t('organization.form.status')"
               >
                 <a-select
                   v-model="formModel.organizationStatus"
                   :options="statusOptions"
-                  :placeholder="$t('organization.form.selectDefault')"
+                  :placeholder="t('organization.form.selectDefault')"
                 />
               </a-form-item>
             </a-col>
@@ -47,13 +47,13 @@
             <template #icon>
               <icon-search />
             </template>
-            {{ $t('organization.columns.operations.query') }}
+            {{ t('organization.columns.operations.query') }}
           </a-button>
           <a-button @click="reset">
             <template #icon>
               <icon-refresh />
             </template>
-            {{ $t('organization.columns.operations.reset') }}
+            {{ t('organization.columns.operations.reset') }}
           </a-button>
         </a-space>
       </a-col>
@@ -69,24 +69,24 @@
     >
       <template #columns>
         <a-table-column
-          :title="$t('organization.columns.organizationName')"
+          :title="t('organization.columns.organizationName')"
           data-index="organizationName"
           fixed="left"
         />
         <a-table-column
-          :title="$t('organization.columns.organizationCode')"
+          :title="t('organization.columns.organizationCode')"
           data-index="organizationCode"
         />
         <a-table-column
-          :title="$t('organization.columns.lastModifiedUserId')"
+          :title="t('organization.columns.lastModifiedUserId')"
           data-index="lastModifiedUserId"
         />
         <a-table-column
-          :title="$t('organization.columns.updateTime')"
+          :title="t('organization.columns.updateTime')"
           data-index="updateTime"
         />
         <a-table-column
-          :title="$t('organization.columns.organizationStatus')"
+          :title="t('organization.columns.organizationStatus')"
           data-index="organizationStatus"
         >
           <template #cell="{ record }">
@@ -96,7 +96,7 @@
             ></span>
             <span v-else class="circle pass"></span>
             {{
-              $t(
+              t(
                 `organization.form.status.${
                   record.organizationStatus === '0' ? 'inactive' : 'active'
                 }`
@@ -105,84 +105,79 @@
           </template>
         </a-table-column>
         <a-table-column
-          :title="$t('organization.columns.operations')"
+          :title="t('organization.columns.operations')"
           data-index="operations"
           fixed="right"
         >
           <template #cell="{ record }">
             <a-button
-              v-show="addVisible"
               type="text"
               size="small"
               @click="handleAddModal(record)"
             >
-              {{ $t('organization.columns.operations.add') }}
+              {{ t('organization.columns.operations.add') }}
             </a-button>
             <a-button
-              v-show="editVisible"
               type="text"
               size="small"
               @click="handleEditModal(record)"
             >
-              {{ $t('organization.columns.operations.edit') }}
+              {{ t('organization.columns.operations.edit') }}
             </a-button>
             <a-button
-              v-show="viewVisible"
               type="text"
               size="small"
               @click="handleViewModal(record)"
             >
-              {{ $t('organization.columns.operations.view') }}
+              {{ t('organization.columns.operations.view') }}
             </a-button>
             <a-button
-              v-show="organizationRoleVisible"
               type="text"
               size="small"
               @click="handleOrganizationRoleModal(record)"
             >
-              {{ $t('organization.columns.operations.organizationRoleGroup') }}
+              {{ t('organization.columns.operations.organizationRoleGroup') }}
             </a-button>
             <a-button
-              v-show="organizationUserVisible"
               type="text"
               size="small"
               @click="handleOrganizationUserModal(record)"
             >
-              {{ $t('organization.columns.operations.organizationUser') }}
+              {{ t('organization.columns.operations.organizationUser') }}
             </a-button>
             <a-popconfirm
-              :content="$t('organization.delete.alert.message')"
-              :ok-text="$t('global.button.confirm')"
-              :cancel-text="$t('global.button.cancel')"
+              :content="t('organization.delete.alert.message')"
+              :ok-text="t('global.button.confirm')"
+              :cancel-text="t('global.button.cancel')"
               :ok-loading="handleLoading"
               @ok="handleDeleteOk(record)"
             >
-              <a-button v-show="deleteVisible" type="text" size="small">
-                {{ $t('organization.columns.operations.delete') }}
+              <a-button type="text" size="small">
+                {{ t('organization.columns.operations.delete') }}
               </a-button>
             </a-popconfirm>
             <a-popconfirm
               v-if="record.organizationStatus === '0'"
-              :content="$t('organization.enable.alert.message')"
-              :ok-text="$t('global.button.confirm')"
-              :cancel-text="$t('global.button.cancel')"
+              :content="t('organization.enable.alert.message')"
+              :ok-text="t('global.button.confirm')"
+              :cancel-text="t('global.button.cancel')"
               :ok-loading="handleLoading"
               @ok="handleEnableOk(record)"
             >
-              <a-button v-show="enableVisible" type="text" size="small">
-                {{ $t('organization.columns.operations.enable') }}
+              <a-button type="text" size="small">
+                {{ t('organization.columns.operations.enable') }}
               </a-button>
             </a-popconfirm>
             <a-popconfirm
               v-else
-              :content="$t('organization.disable.alert.message')"
-              :ok-text="$t('global.button.confirm')"
-              :cancel-text="$t('global.button.cancel')"
+              :content="t('organization.disable.alert.message')"
+              :ok-text="t('global.button.confirm')"
+              :cancel-text="t('global.button.cancel')"
               :ok-loading="handleLoading"
               @ok="handleDisableOk(record)"
             >
-              <a-button v-show="disableVisible" type="text" size="small">
-                {{ $t('organization.columns.operations.disable') }}
+              <a-button type="text" size="small">
+                {{ t('organization.columns.operations.disable') }}
               </a-button>
             </a-popconfirm>
           </template>
@@ -196,23 +191,23 @@
     :modal-style="{ width: '800px' }"
   >
     <template v-if="isAdd" #title>
-      {{ $t('organization.add.modal.title') }}</template
+      {{ t('organization.add.modal.title') }}</template
     >
     <template v-else-if="isEdit" #title>
-      {{ $t('organization.edit.modal.title') }}</template
+      {{ t('organization.edit.modal.title') }}</template
     >
     <template v-else #title>
-      {{ $t('organization.view.modal.title') }}</template
+      {{ t('organization.view.modal.title') }}</template
     >
     <template v-if="isAdd || isEdit" #footer>
       <a-button @click="handleModalCancel">{{
-        $t('global.button.cancel')
+        t('global.button.cancel')
       }}</a-button>
       <a-button
         type="primary"
         :loading="handleLoading"
         @click="handleModalConfirm"
-        >{{ $t('global.button.confirm') }}</a-button
+        >{{ t('global.button.confirm') }}</a-button
       >
     </template>
     <template v-else #footer><span></span></template>
@@ -227,11 +222,11 @@
         <a-col :span="12">
           <a-form-item
             field="organizationName"
-            :label="$t('organization.form.name')"
+            :label="t('organization.form.name')"
             :rules="[
               {
                 required: true,
-                message: $t('organization.organizationName.empty.warning'),
+                message: t('organization.organizationName.empty.warning'),
               },
             ]"
             :validate-trigger="['change', 'input']"
@@ -239,18 +234,18 @@
             <a-input
               v-model="modalModel.organizationName"
               :disabled="isView"
-              :placeholder="$t('organization.form.name.placeholder')"
+              :placeholder="t('organization.form.name.placeholder')"
             />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item
             field="organizationCode"
-            :label="$t('organization.form.code')"
+            :label="t('organization.form.code')"
             :rules="[
               {
                 required: true,
-                message: $t('organization.organizationCode.empty.warning'),
+                message: t('organization.organizationCode.empty.warning'),
               },
             ]"
             :validate-trigger="['change', 'input']"
@@ -258,18 +253,18 @@
             <a-input
               v-model="modalModel.organizationCode"
               :disabled="isView"
-              :placeholder="$t('organization.form.code.placeholder')"
+              :placeholder="t('organization.form.code.placeholder')"
             />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item
             field="organizationStatus"
-            :label="$t('organization.form.status')"
+            :label="t('organization.form.status')"
             :rules="[
               {
                 required: true,
-                message: $t('organization.organizationStatus.empty.warning'),
+                message: t('organization.organizationStatus.empty.warning'),
               },
             ]"
             :validate-trigger="['change', 'blur']"
@@ -278,14 +273,14 @@
               v-model="modalModel.organizationStatus"
               :options="statusOptions"
               :disabled="isView"
-              :placeholder="$t('organization.form.selectDefault')"
+              :placeholder="t('organization.form.selectDefault')"
             />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item
             field="upOrganizationName"
-            :label="$t('organization.form.upOrganizationName')"
+            :label="t('organization.form.upOrganizationName')"
             validate-trigger="input"
             required
           >
@@ -293,7 +288,7 @@
               v-model="modalModel.upOrganizationName"
               disabled
               :placeholder="
-                $t('organization.form.upOrganizationName.placeholder')
+                t('organization.form.upOrganizationName.placeholder')
               "
             />
           </a-form-item>
@@ -301,7 +296,7 @@
         <a-col :span="12">
           <a-form-item
             field="organizationLevel"
-            :label="$t('organization.form.organizationLevel')"
+            :label="t('organization.form.organizationLevel')"
             validate-trigger="input"
             required
           >
@@ -309,7 +304,7 @@
               v-model="modalModel.organizationLevel"
               disabled
               :placeholder="
-                $t('organization.form.organizationLevel.placeholder')
+                t('organization.form.organizationLevel.placeholder')
               "
             />
           </a-form-item>
@@ -320,7 +315,7 @@
   <a-modal
     v-model:visible="organizationRoleGroupModalVisible"
     unmount-on-close
-    :title="$t('organization.roleGroup.modal.title')"
+    :title="t('organization.roleGroup.modal.title')"
     :modal-style="{ width: '800px' }"
     :footer="false"
   >
@@ -334,13 +329,13 @@
           size="small"
           :loading="organizationRelationOkLoading"
           @click="handleOrganizationRelationSave"
-          >{{ $t('global.button.save') }}</a-button
+          >{{ t('global.button.save') }}</a-button
         >
       </template>
       <a-tab-pane key="organizationRoleList">
         <template #title>
           <icon-user-group />
-          {{ $t('organization.tabs.roleList') }}
+          {{ t('organization.tabs.roleList') }}
         </template>
         <a-table
           row-key="roleId"
@@ -357,11 +352,11 @@
         >
           <template #columns>
             <a-table-column
-              :title="$t('role.columns.roleName')"
+              :title="t('role.columns.roleName')"
               data-index="roleName"
             />
             <a-table-column
-              :title="$t('role.columns.roleCode')"
+              :title="t('role.columns.roleCode')"
               data-index="roleCode"
             />
           </template>
@@ -370,7 +365,7 @@
       <a-tab-pane key="organizationGroupList">
         <template #title
           ><icon-user-group />
-          {{ $t('organization.tabs.groupList') }}
+          {{ t('organization.tabs.groupList') }}
         </template>
         <a-table
           row-key="groupId"
@@ -387,11 +382,11 @@
         >
           <template #columns>
             <a-table-column
-              :title="$t('group.columns.groupName')"
+              :title="t('group.columns.groupName')"
               data-index="groupName"
             />
             <a-table-column
-              :title="$t('group.columns.groupCode')"
+              :title="t('group.columns.groupCode')"
               data-index="groupCode"
             />
           </template>
@@ -402,7 +397,7 @@
   <a-modal
     v-model:visible="organizationUserModalVisible"
     unmount-on-close
-    :title="$t('organization.user.modal.title')"
+    :title="t('organization.user.modal.title')"
     :modal-style="{ width: '800px' }"
     :footer="false"
   >
@@ -416,19 +411,19 @@
       >
         <template #columns>
           <a-table-column
-            :title="$t('organization.columns.organizationName')"
+            :title="t('organization.columns.organizationName')"
             data-index="organizationName"
           />
           <a-table-column
-            :title="$t('organization.columns.organizationCode')"
+            :title="t('organization.columns.organizationCode')"
             data-index="organizationCode"
           />
           <a-table-column
-            :title="$t('user.columns.userName')"
+            :title="t('user.columns.userName')"
             data-index="userName"
           />
           <a-table-column
-            :title="$t('user.columns.userCode')"
+            :title="t('user.columns.userCode')"
             data-index="userCode"
           />
         </template>
@@ -438,11 +433,9 @@
 </template>
 
 <script lang="ts">
-import { paramWrapper, statusGetter } from '@/utils/global';
 import { defineComponent, computed, ref, reactive } from 'vue';
-import useLoading from '@/hooks/loading';
-import { Pagination, Options, Done, SystemInfo } from '@/types/global';
-import { hasControlPoint, remoteResourceCall } from '@/utils/permission-utils';
+import { Pagination, Options, Done, SystemInfo } from '../../../../..//types';
+import { paramWrapper, statusGetter, remoteResourceCall } from '../../../../../utils';
 import {
   generateFormModel,
   OrganizationGroupPair,
@@ -451,33 +444,17 @@ import {
   OrganizationRolePair,
   OrganizationRoleRecord,
   OrganizationRoleSave,
-} from '@/views/system-management/relation-permission/components/organization/model';
-import permission from '@/views/system-management/relation-permission/components/organization/permission';
-import { useUserStore } from '@/store';
-import { useI18n } from 'vue-i18n';
-import { RoleRecord } from '@/views/system-management/relation-permission/components/role/model';
+} from './model';
+import permission from './permission';
+import { RoleRecord } from '../role/model';
 import { Message } from '@arco-design/web-vue';
-import { GroupRecord } from '@/views/system-management/relation-permission/components/group/model';
+import { GroupRecord } from '../group/model';
 import { UserRecord } from '../user/model';
+import {organizationInfo, systemInfo, userInfo} from "../../../../../constants";
 
 export default defineComponent({
   setup() {
     const { controlPoints, resources } = permission;
-    const listVisible = hasControlPoint(controlPoints['organization.list']);
-    const addVisible = hasControlPoint(controlPoints['organization.add']);
-    const editVisible = hasControlPoint(controlPoints['organization.edit']);
-    const viewVisible = hasControlPoint(controlPoints['organization.view']);
-    const deleteVisible = hasControlPoint(controlPoints['organization.delete']);
-    const enableVisible = hasControlPoint(controlPoints['organization.enable']);
-    const disableVisible = hasControlPoint(
-      controlPoints['organization.disable']
-    );
-    const organizationUserVisible = hasControlPoint(
-      controlPoints['organization.user']
-    );
-    const organizationRoleVisible = hasControlPoint(
-      controlPoints['organization.roleGroup']
-    );
     const modalVisible = ref<boolean>(false);
     const organizationRoleGroupModalVisible = ref<boolean>(false);
     const organizationUserModalVisible = ref<boolean>(false);
@@ -486,16 +463,11 @@ export default defineComponent({
     const isView = ref<boolean>(false);
     const organizationRelationOkLoading = ref<boolean>(false);
     const modalFormRef = ref();
-    const userStore = useUserStore();
-    const { t } = useI18n();
-    const { loading, setLoading } = useLoading(false);
+    const loading = ref<boolean>(false);
     const handleLoading = ref<boolean>(false);
     const organizationRoleLoading = ref<boolean>(false);
     const organizationGroupLoading = ref<boolean>(false);
     const organizationUserLoading = ref<boolean>(false);
-    const organizationInfo =
-      userStore.useOrganizationInfo() as OrganizationRecord;
-    const systemInfo = userStore.useSystemInfo() as SystemInfo;
     const renderData = ref<OrganizationRecord[]>([organizationInfo]);
     const selectedOrganizationRecord = ref<OrganizationRecord>({});
     const roleRecordData = ref<RoleRecord[]>([]);
@@ -518,7 +490,7 @@ export default defineComponent({
       record: OrganizationRecord,
       done: (arg0: OrganizationRecord[]) => void
     ) => {
-      setLoading(true);
+      loading.value = true;
       try {
         const { data } = await remoteResourceCall<
           OrganizationRecord,
@@ -535,11 +507,11 @@ export default defineComponent({
       } catch (err) {
         console.log(err);
       } finally {
-        setLoading(false);
+        loading.value = false;
       }
     };
     const searchQuery = async () => {
-      setLoading(true);
+      loading.value = true;
       try {
         const { data } = await remoteResourceCall<
           OrganizationRecord,
@@ -557,7 +529,7 @@ export default defineComponent({
       } catch (err) {
         console.log(err);
       } finally {
-        setLoading(false);
+        loading.value = false;
       }
     };
     const search = () => {
@@ -689,7 +661,7 @@ export default defineComponent({
           parseInt(record.organizationLevel || '', 10) + 1
         }`,
         upOrganizationId: record.organizationId,
-        lastModifiedUserId: userStore.userCode,
+        lastModifiedUserId: userInfo.userCode,
       };
     };
     const handleEditModal = (record: OrganizationRecord) => {
@@ -700,7 +672,7 @@ export default defineComponent({
       modalModel.value = {
         ...record,
         upOrganizationName: record.upOrganizationName || '无',
-        lastModifiedUserId: userStore.userCode,
+        lastModifiedUserId: userInfo.userCode,
       };
     };
     const handleViewModal = (record: OrganizationRecord) => {
@@ -798,7 +770,7 @@ export default defineComponent({
               organizationId: selectedOrganizationRecord.value.organizationId,
               systemId: systemInfo.systemId,
               authorizedRoleIds: selectedRoleRowKeys.value,
-              lastModifiedUserId: userStore.userCode,
+              lastModifiedUserId: userInfo.userCode,
             }
           );
           Message.success(t('global.message.save.success'));
@@ -817,7 +789,7 @@ export default defineComponent({
               organizationId: selectedOrganizationRecord.value.organizationId,
               systemId: systemInfo.systemId,
               authorizedGroupIds: selectedGroupRowKeys.value,
-              lastModifiedUserId: userStore.userCode,
+              lastModifiedUserId: userInfo.userCode,
             }
           );
           Message.success(t('global.message.save.success'));
@@ -848,16 +820,76 @@ export default defineComponent({
         });
       }
     };
+    const t = (key:string)=>{
+      const map = {
+        'global.button.confirm': '确定',
+        'global.button.save': '保存',
+        'global.message.save.success': '保存成功！',
+        'global.button.cancel': '取消',
+        'global.form.status.active': '生效',
+        'global.form.status.inactive': '失效',
+        'global.form.options.yes':'是',
+        'global.form.options.no':'否',
+        'global.method.options.post':'POST',
+        'global.method.options.get':'GET',
+        'global.authorization.options.currentOrganization': '本机构',
+        'global.authorization.options.currentSubOrganization': '本机构及下级机构',
+        'global.authorization.options.selfCurrentOrganization': '本人及本机构',
+        'global.clipRule.options.name': '客户姓名',
+        'global.clipRule.options.bankCard': '银行卡号',
+        'global.clipRule.options.idCard': '身份证件',
+        'global.clipRule.options.email': '电子邮件',
+        'global.clipRule.options.phone': '电话手机',
+        'global.clipRule.options.other': '其他',
+        'menu.authority-management.organization': '机构管理',
+        'organization.form.query.name': '机构查询',
+        'organization.form.code': '机构代码',
+        'organization.form.code.placeholder': '请输入机构代码',
+        'organization.form.name': '机构名称',
+        'organization.form.name.placeholder': '请输入机构名称',
+        'organization.form.status': '机构状态',
+        'organization.form.status.active': '生效',
+        'organization.form.status.inactive': '失效',
+        'organization.form.selectDefault': '全部',
+        'organization.form.upOrganizationName': '上级机构',
+        'organization.form.upOrganizationName.placeholder': '请输入上级机构',
+        'organization.form.organizationLevel': '机构层级',
+        'organization.form.organizationLevel.placeholder': '请输入机构层级',
+        'organization.columns.organizationCode': '机构代码',
+        'organization.columns.organizationName': '机构名称',
+        'organization.columns.upOrganizationName': '上级机构名称',
+        'organization.columns.organizationStatus': '机构状态',
+        'organization.columns.updateTime': '最新变更时间',
+        'organization.columns.lastModifiedUserId': '最新变更用户',
+        'organization.columns.operations': '操作',
+        'organization.columns.operations.query': '查询',
+        'organization.columns.operations.reset': '重置',
+        'organization.columns.operations.add': '新增子机构',
+        'organization.columns.operations.edit': '编辑',
+        'organization.columns.operations.view': '查看',
+        'organization.columns.operations.delete': '删除',
+        'organization.columns.operations.disable': '禁用',
+        'organization.columns.operations.enable': '启用',
+        'organization.columns.operations.organizationUser': '机构用户',
+        'organization.columns.operations.organizationRoleGroup': '机构角色岗位',
+        'organization.tabs.roleList': '机构角色列表' ,
+        'organization.tabs.groupList': '机构岗位列表' ,
+        'organization.roleGroup.modal.title': '机构角色岗位列表',
+        'organization.user.modal.title': '机构用户列表',
+        'organization.add.modal.title': '新增机构',
+        'organization.edit.modal.title': '编辑机构',
+        'organization.view.modal.title': '查看机构',
+        'organization.delete.alert.message': '您确定要删除该机构吗?',
+        'organization.enable.alert.message': '您确定要启用该机构吗?',
+        'organization.disable.alert.message': '您确定要禁用该机构吗?',
+        'organization.organizationName.empty.warning': '机构名称为空.',
+        'organization.organizationCode.empty.warning': '机构代码为空.',
+        'organization.organizationStatus.empty.warning': '机构状态未选择.'
+      }
+      return map[key];
+    }
     return {
-      addVisible,
-      listVisible,
-      editVisible,
-      deleteVisible,
-      viewVisible,
-      disableVisible,
-      enableVisible,
-      organizationUserVisible,
-      organizationRoleVisible,
+      t,
       modalVisible,
       organizationRoleGroupModalVisible,
       organizationUserModalVisible,
@@ -903,13 +935,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped lang="less">
-:deep(.arco-table-th) {
-  &:last-child {
-    .arco-table-th-item-title {
-      margin-left: 16px;
-    }
-  }
-}
-</style>

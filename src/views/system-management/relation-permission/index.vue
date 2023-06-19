@@ -344,6 +344,10 @@ export default defineComponent({
     };
     const t = (key:string)=>{
       const map = {
+        'menu.authority-management.user': '用户管理',
+        'menu.authority-management.role': '角色管理',
+        'menu.authority-management.organization': '机构管理',
+        'menu.authority-management.group': '岗位管理',
         'menu.system-management.relation-permission': '组织权限配置',
         'menu.authority-management.menuAuthorization': '菜单授权',
         'menu.authority-management.permissionAuthorization': '权限授权',
@@ -371,13 +375,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-:deep(.arco-table-th) {
-  &:last-child {
-    .arco-table-th-item-title {
-      margin-left: 16px;
-    }
-  }
-}
-</style>

@@ -1,5 +1,5 @@
 <template>
-  <a-card class="general-card" :title="$t('role.form.query.name')">
+  <a-card class="general-card" :title="t('role.form.query.name')">
     <a-row>
       <a-col :flex="1">
         <a-form
@@ -10,27 +10,27 @@
         >
           <a-row :gutter="16">
             <a-col :span="12">
-              <a-form-item field="name" :label="$t('role.form.name')">
+              <a-form-item field="name" :label="t('role.form.name')">
                 <a-input
                   v-model="formModel.roleName"
-                  :placeholder="$t('role.form.name.placeholder')"
+                  :placeholder="t('role.form.name.placeholder')"
                 />
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-form-item field="name" :label="$t('role.form.code')">
+              <a-form-item field="name" :label="t('role.form.code')">
                 <a-input
                   v-model="formModel.roleCode"
-                  :placeholder="$t('role.form.code.placeholder')"
+                  :placeholder="t('role.form.code.placeholder')"
                 />
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-form-item field="status" :label="$t('role.form.status')">
+              <a-form-item field="status" :label="t('role.form.status')">
                 <a-select
-                  v-model="formModel.roleStatus"
+                  v-model="formModel.role_status"
                   :options="statusOptions"
-                  :placeholder="$t('role.form.selectDefault')"
+                  :placeholder="t('role.form.selectDefault')"
                 />
               </a-form-item>
             </a-col>
@@ -44,13 +44,13 @@
             <template #icon>
               <icon-search />
             </template>
-            {{ $t('role.columns.operations.query') }}
+            {{ t('role.columns.operations.query') }}
           </a-button>
           <a-button @click="reset">
             <template #icon>
               <icon-refresh />
             </template>
-            {{ $t('role.columns.operations.reset') }}
+            {{ t('role.columns.operations.reset') }}
           </a-button>
         </a-space>
       </a-col>
@@ -59,11 +59,11 @@
     <a-row style="margin-bottom: 16px">
       <a-col :span="16">
         <a-space>
-          <a-button v-show="addVisible" type="primary" @click="handleAddModal">
+          <a-button type="primary" @click="handleAddModal">
             <template #icon>
               <icon-plus />
             </template>
-            {{ $t('role.columns.operations.add') }}
+            {{ t('role.columns.operations.add') }}
           </a-button>
         </a-space>
       </a-col>
@@ -83,68 +83,64 @@
     >
       <template #columns>
         <a-table-column
-          :title="$t('role.columns.roleName')"
+          :title="t('role.columns.roleName')"
           data-index="roleName"
         />
         <a-table-column
-          :title="$t('role.columns.roleCode')"
+          :title="t('role.columns.roleCode')"
           data-index="roleCode"
         />
         <a-table-column
-          :title="$t('role.columns.lastModifiedUserId')"
+          :title="t('role.columns.lastModifiedUserId')"
           data-index="lastModifiedUserId"
         />
         <a-table-column
-          :title="$t('role.columns.updateTime')"
+          :title="t('role.columns.updateTime')"
           data-index="updateTime"
         />
         <a-table-column
-          :title="$t('role.columns.roleStatus')"
-          data-index="roleStatus"
+          :title="t('role.columns.role_status')"
+          data-index="role_status"
         >
           <template #cell="{ record }">
-            <span v-if="record.roleStatus === '0'" class="circle"></span>
+            <span v-if="record.role_status === '0'" class="circle"></span>
             <span v-else class="circle pass"></span>
             {{
-              $t(
+              t(
                 `role.form.status.${
-                  record.roleStatus === '0' ? 'inactive' : 'active'
+                  record.role_status === '0' ? 'inactive' : 'active'
                 }`
               )
             }}
           </template>
         </a-table-column>
         <a-table-column
-          :title="$t('role.columns.operations')"
+          :title="t('role.columns.operations')"
           data-index="operations"
         >
           <template #cell="{ record }">
             <a-button
-              v-show="editVisible"
               type="text"
               size="small"
               @click="handleEditModal(record)"
             >
-              {{ $t('role.columns.operations.edit') }}
+              {{ t('role.columns.operations.edit') }}
             </a-button>
             <a-button
-              v-show="viewVisible"
               type="text"
               size="small"
               @click="handleViewModal(record)"
             >
-              {{ $t('role.columns.operations.view') }}
+              {{ t('role.columns.operations.view') }}
             </a-button>
             <a-button
-              v-show="roleUserVisible"
               type="text"
               size="small"
               @click="handleRoleUserModal(record)"
             >
-              {{ $t('role.columns.operations.roleUser') }}
+              {{ t('role.columns.operations.roleUser') }}
             </a-button>
             <a-button
-              v-show="roleAuthorize"
               type="text"
               size="small"
               @click="
@@ -154,41 +150,41 @@
                 })
               "
             >
-              {{ $t('role.columns.operations.roleAuthorize') }}
+              {{ t('role.columns.operations.roleAuthorize') }}
             </a-button>
             <a-popconfirm
-              :content="$t('role.delete.alert.message')"
-              :ok-text="$t('global.button.confirm')"
-              :cancel-text="$t('global.button.cancel')"
+              :content="t('role.delete.alert.message')"
+              :ok-text="t('global.button.confirm')"
+              :cancel-text="t('global.button.cancel')"
               :ok-loading="handleLoading"
               @ok="handleDeleteOk(record)"
             >
-              <a-button v-show="deleteVisible" type="text" size="small">
-                {{ $t('role.columns.operations.delete') }}
+              <a-button type="text" size="small">
+                {{ t('role.columns.operations.delete') }}
               </a-button>
             </a-popconfirm>
             <a-popconfirm
-              v-if="record.roleStatus === '0'"
-              :content="$t('role.enable.alert.message')"
-              :ok-text="$t('global.button.confirm')"
-              :cancel-text="$t('global.button.cancel')"
+              v-if="record.role_status === '0'"
+              :content="t('role.enable.alert.message')"
+              :ok-text="t('global.button.confirm')"
+              :cancel-text="t('global.button.cancel')"
               :ok-loading="handleLoading"
               @ok="handleEnableOk(record)"
             >
-              <a-button v-show="enableVisible" type="text" size="small">
-                {{ $t('role.columns.operations.enable') }}
+              <a-button type="text" size="small">
+                {{ t('role.columns.operations.enable') }}
               </a-button>
             </a-popconfirm>
             <a-popconfirm
               v-else
-              :content="$t('role.disable.alert.message')"
-              :ok-text="$t('global.button.confirm')"
-              :cancel-text="$t('global.button.cancel')"
+              :content="t('role.disable.alert.message')"
+              :ok-text="t('global.button.confirm')"
+              :cancel-text="t('global.button.cancel')"
               :ok-loading="handleLoading"
               @ok="handleDisableOk(record)"
             >
-              <a-button v-show="disableVisible" type="text" size="small">
-                {{ $t('role.columns.operations.disable') }}
+              <a-button type="text" size="small">
+                {{ t('role.columns.operations.disable') }}
               </a-button>
             </a-popconfirm>
           </template>
@@ -201,20 +197,20 @@
     unmount-on-close
     :modal-style="{ width: '800px' }"
   >
-    <template v-if="isAdd" #title> {{ $t('role.add.modal.title') }}</template>
+    <template v-if="isAdd" #title> {{ t('role.add.modal.title') }}</template>
     <template v-else-if="isEdit" #title>
-      {{ $t('role.edit.modal.title') }}
+      {{ t('role.edit.modal.title') }}
     </template>
-    <template v-else #title> {{ $t('role.view.modal.title') }}</template>
+    <template v-else #title> {{ t('role.view.modal.title') }}</template>
     <template v-if="isAdd || isEdit" #footer>
       <a-button @click="handleModalCancel"
-        >{{ $t('global.button.cancel') }}
+        >{{ t('global.button.cancel') }}
       </a-button>
       <a-button
         type="primary"
         :loading="handleLoading"
         @click="handleModalConfirm"
-        >{{ $t('global.button.confirm') }}
+        >{{ t('global.button.confirm') }}
       </a-button>
     </template>
     <template v-else #footer><span></span></template>
@@ -229,11 +225,11 @@
         <a-col :span="12">
           <a-form-item
             field="roleName"
-            :label="$t('role.form.name')"
+            :label="t('role.form.name')"
             :rules="[
               {
                 required: true,
-                message: $t('role.roleName.empty.warning'),
+                message: t('role.roleName.empty.warning'),
               },
             ]"
             :validate-trigger="['change', 'input']"
@@ -241,18 +237,18 @@
             <a-input
               v-model="modalModel.roleName"
               :disabled="isView"
-              :placeholder="$t('role.form.name.placeholder')"
+              :placeholder="t('role.form.name.placeholder')"
             />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item
             field="roleCode"
-            :label="$t('role.form.code')"
+            :label="t('role.form.code')"
             :rules="[
               {
                 required: true,
-                message: $t('role.roleCode.empty.warning'),
+                message: t('role.roleCode.empty.warning'),
               },
             ]"
             :validate-trigger="['change', 'input']"
@@ -260,27 +256,27 @@
             <a-input
               v-model="modalModel.roleCode"
               :disabled="isEdit || isView"
-              :placeholder="$t('role.form.code.placeholder')"
+              :placeholder="t('role.form.code.placeholder')"
             />
           </a-form-item>
         </a-col>
         <a-col :span="12">
           <a-form-item
-            field="roleStatus"
-            :label="$t('role.form.status')"
+            field="role_status"
+            :label="t('role.form.status')"
             :rules="[
               {
                 required: true,
-                message: $t('role.roleStatus.empty.warning'),
+                message: t('role.role_status.empty.warning'),
               },
             ]"
             :validate-trigger="['change', 'blur']"
           >
             <a-select
-              v-model="modalModel.roleStatus"
+              v-model="modalModel.role_status"
               :options="statusOptions"
               :disabled="isView"
-              :placeholder="$t('role.form.selectDefault')"
+              :placeholder="t('role.form.selectDefault')"
             />
           </a-form-item>
         </a-col>
@@ -290,7 +286,7 @@
   <a-modal
     v-model:visible="roleUserModalVisible"
     unmount-on-close
-    :title="$t('role.user.modal.title')"
+    :title="t('role.user.modal.title')"
     :modal-style="{ width: '800px' }"
     :footer="false"
   >
@@ -305,19 +301,19 @@
       >
         <template #columns>
           <a-table-column
-            :title="$t('organization.columns.organizationName')"
+            :title="t('organization.columns.organizationName')"
             data-index="organizationName"
           />
           <a-table-column
-            :title="$t('organization.columns.organizationCode')"
+            :title="t('organization.columns.organizationCode')"
             data-index="organizationCode"
           />
           <a-table-column
-            :title="$t('user.columns.userName')"
+            :title="t('user.columns.userName')"
             data-index="userName"
           />
           <a-table-column
-            :title="$t('user.columns.userCode')"
+            :title="t('user.columns.userCode')"
             data-index="userCode"
           />
         </template>
@@ -328,8 +324,6 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref, reactive } from 'vue';
-import { useI18n } from 'vue-i18n';
-import useLoading from '@/hooks/loading';
 import {
   Pagination,
   Options,
@@ -337,30 +331,20 @@ import {
   PaginationQuery,
   Done,
   SystemInfo,
-} from '@/types/global';
-import { hasControlPoint, remoteResourceCall } from '@/utils/permission-utils';
+} from '../../../../../types';
+import { paramWrapper, statusGetter, remoteResourceCall } from '../../../../../utils';
 import {
   generateFormModel,
   RoleRecord,
   RoleUserRecord,
-} from '@/views/system-management/relation-permission/components/role/model';
-import permission from '@/views/system-management/relation-permission/components/role/permission';
-import { paramWrapper, statusGetter } from '@/utils/global';
-import { useUserStore } from '@/store';
+} from './model';
+import {systemInfo, userInfo} from "../../../../../constants";
+import permission from './permission';
 
 export default defineComponent({
   emits: ['authorize'],
   setup() {
     const { controlPoints, resources } = permission;
-    const listVisible = hasControlPoint(controlPoints['role.list']);
-    const addVisible = hasControlPoint(controlPoints['role.add']);
-    const editVisible = hasControlPoint(controlPoints['role.edit']);
-    const viewVisible = hasControlPoint(controlPoints['role.view']);
-    const deleteVisible = hasControlPoint(controlPoints['role.delete']);
-    const enableVisible = hasControlPoint(controlPoints['role.enable']);
-    const disableVisible = hasControlPoint(controlPoints['role.disable']);
-    const roleUserVisible = hasControlPoint(controlPoints['role.user']);
-    const roleAuthorize = hasControlPoint(controlPoints['role.authorize']);
     const modalVisible = ref<boolean>(false);
     const roleUserModalVisible = ref<boolean>(false);
     const roleUserLoading = ref<boolean>(false);
@@ -370,10 +354,7 @@ export default defineComponent({
     const isEdit = ref<boolean>(false);
     const isView = ref<boolean>(false);
     const handleLoading = ref<boolean>(false);
-    const userStore = useUserStore();
-    const systemInfo = userStore.useSystemInfo() as SystemInfo;
-    const { loading, setLoading } = useLoading(true);
-    const { t } = useI18n();
+    const loading = ref<boolean>(true)
     const renderData = ref<RoleRecord[]>([]);
     const formModel = ref(generateFormModel());
     const modalModel = ref(generateFormModel());
@@ -390,7 +371,7 @@ export default defineComponent({
     });
     const statusOptions = computed<Options[]>(statusGetter);
     const fetchData = async (params: PaginationQuery<RoleRecord>) => {
-      setLoading(true);
+      loading.value = true
       try {
         const { data } = await remoteResourceCall<
           PaginationQuery<RoleRecord>,
@@ -403,7 +384,7 @@ export default defineComponent({
       } catch (err) {
         console.log(err);
       } finally {
-        setLoading(false);
+        loading.value = false;
       }
     };
     const search = () => {
@@ -438,9 +419,7 @@ export default defineComponent({
         currentPage: basePagination.current,
       });
     };
-    if (listVisible) {
-      search();
-    }
+    search();
     const reset = () => {
       formModel.value = generateFormModel();
     };
@@ -448,7 +427,7 @@ export default defineComponent({
       modalVisible.value = false;
     };
     const handleModalConfirm = async () => {
-      const { roleCode, roleName, roleStatus } = modalModel.value;
+      const { roleCode, roleName, role_status } = modalModel.value;
       if (!roleName) {
         modalFormRef.value.setFields({
           roleName: {
@@ -463,11 +442,11 @@ export default defineComponent({
             message: t('role.roleCode.empty.warning'),
           },
         });
-      } else if (!roleStatus) {
+      } else if (!role_status) {
         modalFormRef.value.setFields({
-          roleStatus: {
+          role_status: {
             status: 'error',
-            message: t('role.roleStatus.empty.warning'),
+            message: t('role.role_status.empty.warning'),
           },
         });
       } else {
@@ -556,7 +535,7 @@ export default defineComponent({
       isView.value = false;
       modalModel.value = {
         ...generateFormModel(),
-        lastModifiedUserId: userStore.userCode,
+        lastModifiedUserId: userInfo.userCode,
       };
     };
     const handleEditModal = (record: RoleRecord) => {
@@ -566,7 +545,7 @@ export default defineComponent({
       isView.value = false;
       modalModel.value = {
         ...record,
-        lastModifiedUserId: userStore.userCode,
+        lastModifiedUserId: userInfo.userCode,
       };
     };
     const handleViewModal = (record: RoleRecord) => {
@@ -621,16 +600,69 @@ export default defineComponent({
         currentPage,
       });
     };
+    const t = (key:string)=>{
+      const map = {
+        'global.button.confirm': '确定',
+        'global.button.save': '保存',
+        'global.message.save.success': '保存成功！',
+        'global.button.cancel': '取消',
+        'global.form.status.active': '生效',
+        'global.form.status.inactive': '失效',
+        'global.form.options.yes':'是',
+        'global.form.options.no':'否',
+        'global.method.options.post':'POST',
+        'global.method.options.get':'GET',
+        'global.authorization.options.currentOrganization': '本机构',
+        'global.authorization.options.currentSubOrganization': '本机构及下级机构',
+        'global.authorization.options.selfCurrentOrganization': '本人及本机构',
+        'global.clipRule.options.name': '客户姓名',
+        'global.clipRule.options.bankCard': '银行卡号',
+        'global.clipRule.options.idCard': '身份证件',
+        'global.clipRule.options.email': '电子邮件',
+        'global.clipRule.options.phone': '电话手机',
+        'global.clipRule.options.other': '其他',
+        'menu.authority-management.role': '角色管理',
+        'role.form.query.name': '角色查询',
+        'role.form.code': '角色代码',
+        'role.form.code.placeholder': '请输入角色代码',
+        'role.form.name': '角色名称',
+        'role.form.name.placeholder': '请输入角色名称',
+        'role.form.status': '角色状态',
+        'role.form.status.active': '生效',
+        'role.form.status.inactive': '失效',
+        'role.form.selectDefault': '全部',
+        'role.columns.roleCode': '角色代码',
+        'role.columns.roleName': '角色名称',
+        'role.columns.role_status': '角色状态',
+        'role.columns.updateTime': '最新变更时间',
+        'role.columns.lastModifiedUserId': '最新变更用户',
+        'role.columns.operations': '操作',
+        'role.columns.operations.query': '查询',
+        'role.columns.operations.reset': '重置',
+        'role.columns.operations.add': '新增',
+        'role.columns.operations.edit': '编辑',
+        'role.columns.operations.view': '查看',
+        'role.columns.operations.delete': '删除',
+        'role.columns.operations.disable': '禁用',
+        'role.columns.operations.enable': '启用',
+        'role.columns.operations.roleUser': '角色用户',
+        'role.columns.operations.roleMutex': '角色互斥',
+        'role.columns.operations.roleAuthorize': '角色授权',
+        'role.user.modal.title': '角色用户',
+        'role.add.modal.title': '新增角色',
+        'role.edit.modal.title': '编辑角色',
+        'role.view.modal.title': '查看角色',
+        'role.roleName.empty.warning': '角色名称为空.',
+        'role.roleCode.empty.warning': '角色代码为空.',
+        'role.role_status.empty.warning': '角色状态未选择.',
+        'role.delete.alert.message': '您确定要删除该角色吗?',
+        'role.enable.alert.message': '您确定要启用该角色吗?',
+        'role.disable.alert.message': '您确定要禁用该角色吗?',
+      }
+      return map[key];
+    }
     return {
-      addVisible,
-      listVisible,
-      editVisible,
-      deleteVisible,
-      viewVisible,
-      disableVisible,
-      enableVisible,
-      roleUserVisible,
-      roleAuthorize,
+      t,
       modalVisible,
       handleModalCancel,
       handleModalConfirm,
@@ -665,13 +697,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped lang="less">
-:deep(.arco-table-th) {
-  &:last-child {
-    .arco-table-th-item-title {
-      margin-left: 16px;
-    }
-  }
-}
-</style>

@@ -1,14 +1,20 @@
 import {Message} from "@arco-design/web-vue";
+import {invoke} from "@tauri-apps/api/tauri";
 
 export const remoteResourceCall = <T, D>(
   controlCode: string,
   resourceCode: string,
-  data: T,
-  onProgress = (percent: number, progressEvent: any) => {}
-): Promise<any> => {
-  Message.error('没有该控制点！');
-  throw new Error('没有该控制点！');
-};
+  data: T
+): Promise<any> => new Promise((resolve,reject)=>{
+  invoke(resourceCode.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`), {
+    ...data
+  }).then((result) => {
+    resolve(result)
+  }).catch((errorMsg) => {
+    Message.error({content: errorMsg, duration: 1000})
+    reject(errorMsg)
+  })
+})
 
 export const statusGetter = () => {
   return [

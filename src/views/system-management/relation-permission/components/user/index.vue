@@ -814,6 +814,25 @@ export default defineComponent({
     };
     const t = (key:string)=>{
       const map = {
+        'global.button.confirm': '确定',
+        'global.button.save': '保存',
+        'global.message.save.success': '保存成功！',
+        'global.button.cancel': '取消',
+        'global.form.status.active': '生效',
+        'global.form.status.inactive': '失效',
+        'global.form.options.yes':'是',
+        'global.form.options.no':'否',
+        'global.method.options.post':'POST',
+        'global.method.options.get':'GET',
+        'global.authorization.options.currentOrganization': '本机构',
+        'global.authorization.options.currentSubOrganization': '本机构及下级机构',
+        'global.authorization.options.selfCurrentOrganization': '本人及本机构',
+        'global.clipRule.options.name': '客户姓名',
+        'global.clipRule.options.bankCard': '银行卡号',
+        'global.clipRule.options.idCard': '身份证件',
+        'global.clipRule.options.email': '电子邮件',
+        'global.clipRule.options.phone': '电话手机',
+        'global.clipRule.options.other': '其他',
         'menu.authority-management.user': '用户管理',
         'user.form.query.name': '用户查询',
         'user.form.code': '用户代码',
@@ -902,13 +921,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped lang="less">
-:deep(.arco-table-th) {
-  &:last-child {
-    .arco-table-th-item-title {
-      margin-left: 16px;
-    }
-  }
-}
-</style>
