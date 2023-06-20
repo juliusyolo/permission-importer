@@ -1,13 +1,13 @@
-use sqlx::types::chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
+use sqlx::types::chrono::NaiveDateTime;
+
 use crate::common::serde_naive_datetime;
+
 #[derive(Serialize, Deserialize, Default)]
 pub struct ModuleModel {
   id: u64,
   #[serde(rename = "moduleId")]
   module_id: String,
-  #[serde(rename = "moduleCode")]
-  module_code: String,
   #[serde(rename = "moduleName")]
   module_name: String,
   #[serde(rename = "moduleRemark")]
