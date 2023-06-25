@@ -10,7 +10,7 @@ export default {
     'user.userRoleGroup': 'userRoleGroup',
   },
   resources:{
-    'user.resources.list': 'list',
+    'user.resources.list': 'get_user_list_by_pagination',
     'user.resources.save': 'save',
     'user.resources.edit': 'edit',
     'user.resources.view': 'view',

@@ -4,9 +4,9 @@ mod module;
 mod menu;
 mod organization;
 mod role;
-mod user;
+pub(crate) mod user;
 mod system;
-mod authorization_record;
+mod authorization;
 mod control;
 mod function;
 

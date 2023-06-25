@@ -24,10 +24,12 @@ pub struct UserModel {
   pub user_type: String,
   #[serde(rename = "userStatus")]
   pub user_status: String,
-  #[serde(rename = "systems")]
-  pub systems: Vec<SystemModel>,
-  #[serde(rename = "organizations")]
-  pub organizations: Vec<OrganizationModel>,
+  #[serde(rename = "userToken")]
+  pub user_token: String,
+  // #[serde(rename = "systems")]
+  // pub systems: Vec<SystemModel>,
+  // #[serde(rename = "organizations")]
+  // pub organizations: Vec<OrganizationModel>,
   #[serde(rename = "lastModifiedUserId")]
   pub last_modified_user_id: String,
   #[serde(rename = "createTime", with = "serde_naive_datetime")]
@@ -35,6 +37,7 @@ pub struct UserModel {
   #[serde(rename = "updateTime", with = "serde_naive_datetime")]
   pub update_time: NaiveDateTime,
 }
+
 #[derive(Serialize, Deserialize, Default)]
 pub struct UserOrganizationRelationModel {
   pub id: u64,
@@ -89,6 +92,7 @@ pub struct UserOrganizationGroupRelationModel {
   pub update_time: NaiveDateTime,
 }
 
+#[derive(Serialize, Deserialize, Default)]
 pub struct UserOrganizationRoleRelationModel {
   pub id: u64,
   #[serde(rename = "userOrgRoleRelId")]

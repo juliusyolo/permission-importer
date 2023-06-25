@@ -1,1 +1,10 @@
 pub mod version_control_command;
+mod group_command;
+pub(crate) mod user_command;
+mod control_command;
+mod role_command;
+mod organization_command;
+mod module_command;
+mod menu_command;
+mod function_command;
+mod authorization_command;

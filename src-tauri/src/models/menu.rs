@@ -44,7 +44,7 @@ pub struct MenuModel {
   update_time: NaiveDateTime,
 }
 
-
+#[derive(Serialize, Deserialize, Default)]
 pub struct MenuFunctionModel {
   id: u64,
   #[serde(rename = "menuId")]
