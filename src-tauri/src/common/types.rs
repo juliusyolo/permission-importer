@@ -8,7 +8,8 @@ pub struct PaginationResult<T> {
   pub(crate) current_page: i64,
   #[serde(rename = "pageSize")]
   pub(crate) page_size: i64,
-  pub(crate) data: Vec<T>,
+  #[serde(rename = "dataList")]
+  pub(crate) data_list: Vec<T>,
 }
 
 pub struct DatabaseConnectionPool {

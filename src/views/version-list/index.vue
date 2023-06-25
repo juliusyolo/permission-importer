@@ -47,7 +47,7 @@ export default defineComponent({
         pageSize: pagination.value.pageSize
       }).then(result => {
         versionControlPaginationResult.value = result as VersionControlPaginationResult
-        data.value = versionControlPaginationResult.value?.data as VersionControl[]
+        data.value = versionControlPaginationResult.value?.dataList as VersionControl[]
         pagination.value.total = versionControlPaginationResult.value?.total
       }).catch(errorMsg => {
         Message.error({content: errorMsg, duration: 1000})

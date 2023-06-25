@@ -3,7 +3,7 @@ use sqlx::Error;
 use tauri::State;
 
 use crate::common::types::{DatabaseConnectionPool, PaginationResult};
-use crate::models::user::UserModel;
+use crate::models::user::{UserModel, UserVO};
 
 #[tauri::command]
 pub async fn add_user(user_code: String, user_name: String, user_gender: String, user_status: String, last_modified_user_id: String, organization_ids: Vec<String>, state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
@@ -65,57 +65,64 @@ pub struct UserCondition {
   organization_id: String,
 }
 
-// #[tauri::command]
-// pub async fn get_user_list_by_pagination(current_page: i64, page_size: i64, condition: UserCondition, state: State<'_, DatabaseConnectionPool>) -> Result<PaginationResult<UserModel>, String> {
-//   if current_page == 0 || page_size == 0 {
-//     return Err(format!("分页参数不正确"));
-//   }
-//   let mut pagination_result = PaginationResult::<UserModel>::default();
-//   pagination_result.current_page = current_page;
-//   pagination_result.page_size = page_size;
-//   let offset = (current_page - 1) * page_size;
-//   let version_control_list_result = sqlx::query_as!(
-//         UserModel,
-//         r#"SELECT
-//         id,
-//         user_id,
-//         user_name,
-//         user_code,
-//         user_gender,
-//         user_avatar,
-//         user_type,
-//         user_status,
-//         user_token,
-//         last_modified_user_id,
-//         create_time,
-//         update_time
-//          FROM bos_user ORDER BY id desc LIMIT ? OFFSET ?"#,
-//         page_size,
-//         offset
-//     )
-//     .fetch_all(&state.pool)
-//     .await;
-//   match version_control_list_result {
-//     Ok(version_control_list) => {
-//       pagination_result.data = version_control_list
-//     }
-//     Err(_error) => {
-//       return Err(format!("查询分页数据异常"));
-//     }
-//   }
-//   let total_result: Result<i64, Error> = sqlx::query_scalar(r#"SELECT count(*) FROM bos_user"#)
-//     .fetch_one(&state.pool)
-//     .await;
-//   match total_result {
-//     Ok(total) => {
-//       pagination_result.total = total;
-//     }
-//     Err(_error) => {
-//       return Err(format!("查询总数异常"));
-//     }
-//   }
-//   Ok(pagination_result)
-// }
+#[tauri::command]
+pub async fn get_user_list_by_pagination(current_page: i64, page_size: i64, condition: UserCondition, state: State<'_, DatabaseConnectionPool>) -> Result<PaginationResult<UserVO>, String> {
+  if current_page == 0 || page_size == 0 {
+    return Err(format!("分页参数不正确"));
+  }
+  let mut pagination_result = PaginationResult::<UserVO>::default();
+  pagination_result.current_page = current_page;
+  pagination_result.page_size = page_size;
+  let offset = (current_page - 1) * page_size;
+  let version_control_list_result = sqlx::query_as!(
+        UserModel,
+        r#"SELECT
+        id,
+        user_id,
+        user_name,
+        user_code,
+        user_gender,
+        user_avatar,
+        user_type,
+        user_status,
+        user_token,
+        last_modified_user_id,
+        create_time,
+        update_time
+        FROM bos_user ORDER BY id desc LIMIT ? OFFSET ?"#,
+        page_size,
+        offset
+  )
+    .fetch_all(&state.pool).map(UserVO::from)
+    .await;
+  match version_control_list_result {
+    Ok(version_control_list) => {
+      let data_list = version_control_list.into_iter().map(async move |user_model: UserModel| {
+        let organization_ids = sqlx::query_as!(String,r#"SELECT organization_id FROM bos_user_orgainzation_relation where user_id = ?"#,user_model.user_id)
+          .fetch_all(&state.pool).await;
+        let mut user_vo: UserVO = UserVO::from(user_model);
+        user_vo.organizations = organization_ids;
+        return user_vo;
+      }).collect();
+      pagination_result.data_list = data_list;
+    }
+    Err(_error) => {
+      return Err(format!("查询分页数据异常"));
+    }
+  }
+  let total_result: Result<i64, Error> = sqlx::query_scalar(r#"SELECT count(*) FROM bos_user"#)
+    .fetch_one(&state.pool)
+    .await;
+  match total_result {
+    Ok(total) => {
+      pagination_result.total = total;
+    }
+    Err(_error) => {
+      return Err(format!("查询总数异常"));
+    }
+  }
+  Ok(pagination_result)
+}
 
 //
 //

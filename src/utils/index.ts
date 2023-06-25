@@ -5,11 +5,12 @@ export const remoteResourceCall = <T, D>(
   controlCode: string,
   resourceCode: string,
   data: T
-): Promise<any> => new Promise((resolve,reject)=>{
+): Promise<any> => new Promise((resolve, reject) => {
   invoke(resourceCode.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`), {
     ...data
   }).then((result) => {
-    resolve(result)
+    console.log(result)
+    resolve({data: result})
   }).catch((errorMsg) => {
     Message.error({content: errorMsg, duration: 1000})
     reject(errorMsg)

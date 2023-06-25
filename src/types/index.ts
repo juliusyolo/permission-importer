@@ -38,10 +38,8 @@ export interface GeneralChart {
 
 export interface PaginationResult<T> {
   total: number;
-  totalPage: number;
   pageSize: number;
   currentPage: number;
-  size: number;
   dataList: Array<T>;
 }
 export interface PaginationQuery<T> {

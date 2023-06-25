@@ -4,7 +4,7 @@
 use sqlx::mysql::MySqlPool;
 
 use commands::version_control_command::{get_version_control_list_by_pagination, save_version_control};
-use commands::user_command::{add_user};
+use commands::user_command::{add_user,get_user_list_by_pagination};
 use common::types::{DatabaseConnectionPool};
 
 mod models;
@@ -17,7 +17,7 @@ async fn main() {
   let pool = MySqlPool::connect_lazy("mysql://root:527901748@localhost:3306/permission_control").expect("");
   tauri::Builder::default()
     .manage(DatabaseConnectionPool { pool })
-    .invoke_handler(tauri::generate_handler![get_version_control_list_by_pagination,save_version_control,add_user])
+    .invoke_handler(tauri::generate_handler![get_version_control_list_by_pagination,save_version_control,add_user,get_user_list_by_pagination])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

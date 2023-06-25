@@ -23,7 +23,7 @@ pub async fn get_version_control_list_by_pagination(current_page: i64, page_size
     .await;
   match version_control_list_result {
     Ok(version_control_list) => {
-      pagination_result.data = version_control_list
+      pagination_result.data_list = version_control_list
     }
     Err(_error) => {
       return Err(format!("查询分页数据异常"));

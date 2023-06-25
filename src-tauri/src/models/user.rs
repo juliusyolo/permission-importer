@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 use sqlx::types::chrono::NaiveDateTime;
-
+use std::convert::From;
 use crate::common::serde_naive_datetime;
 use crate::models::group::GroupModel;
 use crate::models::organization::OrganizationModel;
@@ -15,17 +15,17 @@ pub struct UserModel {
   #[serde(rename = "userName")]
   pub user_name: String,
   #[serde(rename = "userCode")]
-  pub user_code: String,
+  pub user_code: Option<String>,
   #[serde(rename = "userGender")]
-  pub user_gender: String,
+  pub user_gender: Option<String>,
   #[serde(rename = "userAvatar")]
-  pub user_avatar: String,
+  pub user_avatar: Option<String>,
   #[serde(rename = "userType")]
-  pub user_type: String,
+  pub user_type: Option<String>,
   #[serde(rename = "userStatus")]
   pub user_status: String,
   #[serde(rename = "userToken")]
-  pub user_token: String,
+  pub user_token: Option<String>,
   // #[serde(rename = "systems")]
   // pub systems: Vec<SystemModel>,
   // #[serde(rename = "organizations")]
@@ -37,7 +37,40 @@ pub struct UserModel {
   #[serde(rename = "updateTime", with = "serde_naive_datetime")]
   pub update_time: NaiveDateTime,
 }
+#[derive(Serialize, Deserialize, Default)]
+pub struct UserVO {
+  #[serde(rename = "userId")]
+  pub user_id: String,
+  #[serde(rename = "userName")]
+  pub user_name: String,
+  #[serde(rename = "userCode")]
+  pub user_code: Option<String>,
+  #[serde(rename = "userGender")]
+  pub user_gender: Option<String>,
+  #[serde(rename = "userStatus")]
+  pub user_status: String,
+  #[serde(rename = "organizations")]
+  pub organizations: Vec<String>,
+  #[serde(rename = "lastModifiedUserId")]
+  pub last_modified_user_id: String,
+  #[serde(rename = "updateTime", with = "serde_naive_datetime")]
+  pub update_time: NaiveDateTime,
+}
 
+impl From<UserModel> for UserVO {
+  fn from(value: UserModel) -> Self {
+    UserVO{
+      user_id: value.user_id,
+      user_name: value.user_name,
+      user_code: value.user_code,
+      user_gender: value.user_gender,
+      user_status: value.user_status,
+      organizations: vec![],
+      last_modified_user_id: value.last_modified_user_id,
+      update_time: value.update_time,
+    }
+  }
+}
 #[derive(Serialize, Deserialize, Default)]
 pub struct UserOrganizationRelationModel {
   pub id: u64,
