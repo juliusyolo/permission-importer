@@ -35,4 +35,27 @@ pub struct FunctionModel {
   pub update_time: NaiveDateTime,
 }
 
+#[derive(Serialize, Deserialize, Default)]
+pub struct FunctionVO {}
 
+#[derive(Serialize, Deserialize, Default)]
+pub struct ModuleFunctionCondition {
+  #[serde(rename = "moduleName")]
+  module_name: String,
+  #[serde(rename = "functionName")]
+  function_name: String,
+  #[serde(rename = "systemId")]
+  system_id: String,
+}
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct FunctionCondition {
+  #[serde(rename = "moduleId")]
+  module_id: String,
+  #[serde(rename = "functionName")]
+  function_name: String,
+  #[serde(rename = "functionUrl")]
+  function_url: String,
+  #[serde(rename = "functionStatus")]
+  function_status: String
+}

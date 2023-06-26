@@ -434,7 +434,7 @@
 
 <script lang="ts">
 import { defineComponent, computed, ref, reactive } from 'vue';
-import { Pagination, Options, Done, SystemInfo } from '../../../../..//types';
+import { Pagination, Options,  SystemInfo } from '../../../../..//types';
 import { paramWrapper, statusGetter, remoteResourceCall } from '../../../../../utils';
 import {
   generateFormModel,

@@ -49,4 +49,11 @@ pub struct AuthorizationRecordHelperModel {
   pub update_time: NaiveDateTime,
 }
 
+#[derive(Serialize, Deserialize, Default)]
+pub struct AuthorizationResource{
 
+}
+#[derive(Serialize, Deserialize, Default)]
+pub struct AuthorizedPair<T>{
+   data:T,
+}

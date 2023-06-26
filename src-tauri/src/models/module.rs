@@ -21,3 +21,16 @@ pub struct ModuleModel {
   #[serde(rename = "updateTime", with = "serde_naive_datetime")]
   update_time: NaiveDateTime,
 }
+#[derive(Serialize, Deserialize, Default)]
+pub struct ModuleVO{
+
+}
+#[derive(Serialize, Deserialize, Default)]
+pub struct ModuleCondition{
+  #[serde(rename = "moduleName")]
+  module_name: Option<String>,
+  #[serde(rename = "moduleStatus")]
+  module_status: Option<String>,
+  #[serde(rename = "systemId")]
+  system_id:String
+}

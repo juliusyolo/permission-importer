@@ -10,13 +10,13 @@ export default {
     'group.user': 'groupUser',
   },
   resources:{
-    'group.resources.list': 'list',
-    'group.resources.save': 'save',
-    'group.resources.edit': 'edit',
+    'group.resources.list': 'get_group_list_by_pagination',
+    'group.resources.save': 'add_group',
+    'group.resources.edit': 'edit_group',
     'group.resources.view': 'view',
-    'group.resources.delete': 'delete',
-    'group.resources.enable': 'enable',
-    'group.resources.disable': 'disable',
-    'group.resources.groupUser': 'groupUser',
+    'group.resources.delete': 'delete_group',
+    'group.resources.enable': 'enable_group',
+    'group.resources.disable': 'disable_group',
+    'group.resources.groupUser': 'get_group_user_list_by_pagination',
   }
 }

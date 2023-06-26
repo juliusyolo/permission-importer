@@ -1,6 +1,8 @@
+use std::convert::From;
+
 use serde::{Deserialize, Serialize};
 use sqlx::types::chrono::NaiveDateTime;
-use std::convert::From;
+
 use crate::common::serde_naive_datetime;
 use crate::models::group::GroupModel;
 use crate::models::organization::OrganizationModel;
@@ -37,6 +39,7 @@ pub struct UserModel {
   #[serde(rename = "updateTime", with = "serde_naive_datetime")]
   pub update_time: NaiveDateTime,
 }
+
 #[derive(Serialize, Deserialize, Default)]
 pub struct UserVO {
   #[serde(rename = "userId")]
@@ -50,7 +53,7 @@ pub struct UserVO {
   #[serde(rename = "userStatus")]
   pub user_status: String,
   #[serde(rename = "organizations")]
-  pub organizations: Vec<String>,
+  pub organizations: Vec<Option<String>>,
   #[serde(rename = "lastModifiedUserId")]
   pub last_modified_user_id: String,
   #[serde(rename = "updateTime", with = "serde_naive_datetime")]
@@ -59,7 +62,7 @@ pub struct UserVO {
 
 impl From<UserModel> for UserVO {
   fn from(value: UserModel) -> Self {
-    UserVO{
+    UserVO {
       user_id: value.user_id,
       user_name: value.user_name,
       user_code: value.user_code,
@@ -71,6 +74,7 @@ impl From<UserModel> for UserVO {
     }
   }
 }
+
 #[derive(Serialize, Deserialize, Default)]
 pub struct UserOrganizationRelationModel {
   pub id: u64,
@@ -153,4 +157,144 @@ pub struct UserOrganizationRoleRelationModel {
   #[serde(rename = "updateTime", with = "serde_naive_datetime")]
   pub update_time: NaiveDateTime,
 
+}
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct UserCondition {
+  #[serde(rename = "userCode")]
+  user_code: Option<String>,
+  #[serde(rename = "userName")]
+  user_name: Option<String>,
+  #[serde(rename = "userStatus")]
+  user_status: Option<String>,
+  #[serde(rename = "organizationId")]
+  organization_id: String,
+  #[serde(rename = "systemId")]
+  system_id:String,
+}
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct UserOrganizationVO {
+  #[serde(rename = "userId")]
+  pub user_id: String,
+  #[serde(rename = "userName")]
+  pub user_name: String,
+  #[serde(rename = "userCode")]
+  pub user_code: Option<String>,
+  #[serde(rename = "userGender")]
+  pub user_gender: Option<String>,
+  #[serde(rename = "userStatus")]
+  pub user_status: String,
+  #[serde(rename = "organizations")]
+  pub organizations: Vec<Option<String>>,
+  #[serde(rename = "lastModifiedUserId")]
+  pub last_modified_user_id: String,
+  #[serde(rename = "updateTime", with = "serde_naive_datetime")]
+  pub update_time: NaiveDateTime,
+  #[serde(rename = "organizationId")]
+  pub organization_id: String,
+  #[serde(rename = "organizationCode")]
+  pub organization_code: String,
+  #[serde(rename = "organizationName")]
+  pub organization_name: String,
+  #[serde(rename = "upOrganizationId")]
+  pub up_organization_id: String,
+  #[serde(rename = "organizationLevel")]
+  pub organization_level: String,
+}
+
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct UserOrganizationGroupVO {
+  #[serde(rename = "userId")]
+  pub user_id: String,
+  #[serde(rename = "userName")]
+  pub user_name: String,
+  #[serde(rename = "userCode")]
+  pub user_code: Option<String>,
+  #[serde(rename = "userGender")]
+  pub user_gender: Option<String>,
+  #[serde(rename = "userStatus")]
+  pub user_status: String,
+  #[serde(rename = "organizations")]
+  pub organizations: Vec<Option<String>>,
+  #[serde(rename = "lastModifiedUserId")]
+  pub last_modified_user_id: String,
+  #[serde(rename = "updateTime", with = "serde_naive_datetime")]
+  pub update_time: NaiveDateTime,
+  #[serde(rename = "organizationId")]
+  pub organization_id: String,
+  #[serde(rename = "organizationCode")]
+  pub organization_code: String,
+  #[serde(rename = "organizationName")]
+  pub organization_name: String,
+  #[serde(rename = "upOrganizationId")]
+  pub up_organization_id: String,
+  #[serde(rename = "organizationLevel")]
+  pub organization_level: String,
+  #[serde(rename = "orgGroupRelId")]
+  pub org_group_rel_id: String,
+  #[serde(rename = "groupId")]
+  pub group_id: String,
+  #[serde(rename = "groupName")]
+  pub group_name: String,
+  #[serde(rename = "groupCode")]
+  pub group_code: String,
+  pub disabled: bool,
+}
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct UserOrganizationRoleVO {
+  #[serde(rename = "userId")]
+  pub user_id: String,
+  #[serde(rename = "userName")]
+  pub user_name: String,
+  #[serde(rename = "userCode")]
+  pub user_code: Option<String>,
+  #[serde(rename = "userGender")]
+  pub user_gender: Option<String>,
+  #[serde(rename = "userStatus")]
+  pub user_status: String,
+  #[serde(rename = "organizations")]
+  pub organizations: Vec<Option<String>>,
+  #[serde(rename = "lastModifiedUserId")]
+  pub last_modified_user_id: String,
+  #[serde(rename = "updateTime", with = "serde_naive_datetime")]
+  pub update_time: NaiveDateTime,
+  #[serde(rename = "organizationId")]
+  pub organization_id: String,
+  #[serde(rename = "organizationCode")]
+  pub organization_code: String,
+  #[serde(rename = "organizationName")]
+  pub organization_name: String,
+  #[serde(rename = "upOrganizationId")]
+  pub up_organization_id: String,
+  #[serde(rename = "organizationLevel")]
+  pub organization_level: String,
+  #[serde(rename = "orgRoleRelId")]
+  pub org_role_rel_id: String,
+  #[serde(rename = "roleId")]
+  pub role_id: String,
+  #[serde(rename = "roleName")]
+  pub role_name: String,
+  #[serde(rename = "roleCode")]
+  pub role_code: String,
+  pub disabled: bool,
+}
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct UserGroupPair {
+  #[serde(rename = "authorizedOrganizationGroupRelIds")]
+  pub authorized_organization_group_rel_ids: Vec<String>,
+  #[serde(rename = "userOrganizationGroupList")]
+  pub user_organization_group_list: Vec<UserOrganizationGroupVO>,
+}
+
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct UserRolePair {
+  #[serde(rename = "authorizedOrganizationRoleRelIds")]
+  pub authorized_organization_role_rel_ids: Vec<String>,
+  #[serde(rename = "userOrganizationRoleList")]
+  pub user_organization_role_list: Vec<UserOrganizationRoleVO>,
 }

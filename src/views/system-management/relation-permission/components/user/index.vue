@@ -423,7 +423,7 @@
 
 <script lang="ts">
 import {computed, defineComponent, reactive, ref} from 'vue';
-import {Options, Pagination, PaginationQuery, PaginationResult, SystemInfo,} from '../../../../../types';
+import {Options, Pagination, PaginationQuery, PaginationResult,} from '../../../../../types';
 import {paramWrapper, remoteResourceCall, statusGetter} from '../../../../../utils';
 import {
   generateFormModel,
@@ -440,6 +440,7 @@ import permission from './permission';
 import {RoleRecord} from '../role/model';
 import {Message} from '@arco-design/web-vue';
 import {OrganizationRecord} from '../organization/model';
+import {organizationInfo, systemInfo, userInfo} from '../../../../../constants';
 
 export default defineComponent({
   setup() {
@@ -450,16 +451,6 @@ export default defineComponent({
     const isEdit = ref<boolean>(false);
     const isView = ref<boolean>(false);
     const handleLoading = ref<boolean>(false);
-    const systemInfo = reactive<SystemInfo>({
-      systemId: '',
-      systemName: ''
-    })
-    const userInfo = reactive({
-      userCode: '310198'
-    })
-    const organizationInfo = reactive<OrganizationRecord>({
-      organizationId: ''
-    });
     const loading = ref<boolean>(true)
     const renderData = ref<UserRecord[]>([]);
     const userRoleData = ref<UserOrganizationRoleRecord[]>([]);
@@ -812,7 +803,7 @@ export default defineComponent({
     const selectedOrgGroupChange = (keys: string[]) => {
       selectedOrgGroupRowKeys.value = keys;
     };
-    const t = (key:string)=>{
+    const t = (key: string) => {
       const map = {
         'global.button.confirm': '确定',
         'global.button.save': '保存',
@@ -820,10 +811,10 @@ export default defineComponent({
         'global.button.cancel': '取消',
         'global.form.status.active': '生效',
         'global.form.status.inactive': '失效',
-        'global.form.options.yes':'是',
-        'global.form.options.no':'否',
-        'global.method.options.post':'POST',
-        'global.method.options.get':'GET',
+        'global.form.options.yes': '是',
+        'global.form.options.no': '否',
+        'global.method.options.post': 'POST',
+        'global.method.options.get': 'GET',
         'global.authorization.options.currentOrganization': '本机构',
         'global.authorization.options.currentSubOrganization': '本机构及下级机构',
         'global.authorization.options.selfCurrentOrganization': '本人及本机构',
@@ -840,7 +831,7 @@ export default defineComponent({
         'user.form.name': '用户名称',
         'user.form.name.placeholder': '请输入用户名称',
         'user.form.status': '用户状态',
-        'user.form.organizations':'机构信息',
+        'user.form.organizations': '机构信息',
         'user.form.status.active': '生效',
         'user.form.status.inactive': '失效',
         'user.form.selectDefault': '全部',
@@ -860,9 +851,9 @@ export default defineComponent({
         'user.columns.operations.disable': '禁用',
         'user.columns.operations.enable': '启用',
         'user.columns.operations.userRoleGroup': '角色岗位',
-        'user.role.group.modal.title': '角色岗位列表' ,
-        'user.tabs.roleList': '用户角色列表' ,
-        'user.tabs.groupList': '用户岗位列表' ,
+        'user.role.group.modal.title': '角色岗位列表',
+        'user.tabs.roleList': '用户角色列表',
+        'user.tabs.groupList': '用户岗位列表',
         'user.add.modal.title': '新增用户',
         'user.edit.modal.title': '编辑用户',
         'user.view.modal.title': '查看用户',

@@ -73,3 +73,24 @@ pub struct ResourceAuthorizationModel {
   #[serde(rename = "updateTime", with = "serde_naive_datetime")]
   pub update_time: NaiveDateTime,
 }
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct ControlPointCondition {
+  #[serde(rename = "functionId")]
+  pub function_id: String,
+  #[serde(rename = "controlCode")]
+  pub control_code: String,
+  #[serde(rename = "controlName")]
+  pub control_name: String,
+  #[serde(rename = "controlStatus")]
+  pub control_status: String,
+}
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct ControlPointVO {}
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct ResourceClipRuleVO {}
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct ControlResourceVO {}

@@ -23,3 +23,41 @@ pub struct GroupModel {
   #[serde(rename = "updateTime", with = "serde_naive_datetime")]
   pub update_time: NaiveDateTime,
 }
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct GroupVO{
+  #[serde(rename = "groupId")]
+  pub group_id: String,
+  #[serde(rename = "groupCode")]
+  pub group_code: String,
+  #[serde(rename = "groupName")]
+  pub group_name: String,
+  #[serde(rename = "groupRemark")]
+  pub group_remark: String,
+  #[serde(rename = "groupStatus")]
+  pub group_status: String,
+  #[serde(rename = "lastModifiedUserId")]
+  pub last_modified_user_id: String,
+  #[serde(rename = "updateTime", with = "serde_naive_datetime")]
+  pub update_time: NaiveDateTime,
+}
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct GroupCondition{
+  #[serde(rename = "groupCode")]
+  pub group_code:Option<String>,
+  #[serde(rename = "groupName")]
+  pub group_name:Option<String>,
+  #[serde(rename = "groupStatus")]
+  pub group_status:Option<String>,
+  #[serde(rename = "systemId")]
+  pub system_id:String
+}
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct GroupUserCondition{
+  #[serde(rename = "groupId")]
+  group_id:String,
+  #[serde(rename = "systemId")]
+  pub system_id:String
+}

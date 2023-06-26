@@ -3,70 +3,93 @@ use sqlx::Error;
 use tauri::State;
 
 use crate::common::types::{DatabaseConnectionPool, PaginationResult};
-use crate::models::user::{UserModel, UserVO};
+use crate::models::user::{UserGroupPair, UserCondition, UserModel, UserRolePair, UserVO};
 
 #[tauri::command]
-pub async fn add_user(user_code: String, user_name: String, user_gender: String, user_status: String, last_modified_user_id: String, organization_ids: Vec<String>, state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
+pub async fn add_user(
+  user_code: String,
+  user_name: String,
+  user_gender: String,
+  user_status: String,
+  last_modified_user_id: String,
+  organization_ids: Vec<String>,
+  create_time: String,
+  state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
   println!("{}", last_modified_user_id);
   Ok(1)
 }
 
 
-// #[tauri::command]
-// pub async fn edit_user(UserEditRequest request,state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
-//   return ResponseWrapper.apply(userService::editUser, request);
-// }
-//
-//
-// #[tauri::command]
-// pub async fn delete_user(UserIdRequest request, state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
-//   return ResponseWrapper.apply(userService::deleteUser, request);
-// }
-//
-//
-// #[tauri::command]
-// pub async fn disable_user(UserIdRequest request, state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
-//   return ResponseWrapper.apply(userService::disableUser, request);
-// }
-//
-//
-// #[tauri::command]
-// pub async fn enable_user(UserIdRequest request, state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
-//   return ResponseWrapper.apply(userService::enableUser, request);
-// }
-//
-//
-// public ResponseWrapper<UseGroupPair> getUserGroupList( UserGroupQueryRequest request,state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
-// return ResponseWrapper.apply(userService::getUserGroupList, request);
-// }
-//
-//
-// public ResponseWrapper<UserRolePair> getUserRoleList( UserRoleQueryRequest request,state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
-// return ResponseWrapper.apply(userService::getUserRoleList, request);
-// }
-//
-//
-// #[tauri::command]
-// pub async fn add_user_role(UserRoleAddRequest request, state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
-//   return ResponseWrapper.apply(userService::addUserRole, request);
-// }
-//
-//
+#[tauri::command]
+pub async fn edit_user(
+  user_id: String,
+  user_code: String,
+  user_name: String,
+  user_gender: String,
+  user_status: String,
+  last_modified_user_id: String,
+  organization_ids: Vec<String>,
+  update_time: String,
+  state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
+  Ok(1)
+}
 
-#[derive(Serialize, Deserialize, Default)]
-pub struct UserCondition {
-  #[serde(rename = "userCode")]
-  user_code: Option<String>,
-  #[serde(rename = "userName")]
-  user_name: Option<String>,
-  #[serde(rename = "userStatus")]
-  user_status: Option<String>,
-  #[serde(rename = "organizationId")]
+
+#[tauri::command]
+pub async fn delete_user(user_id: String, system_id: String, update_time: String, state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
+  Ok(1)
+}
+
+
+#[tauri::command]
+pub async fn disable_user(user_id: String, system_id: String, update_time: String, state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
+  Ok(1)
+}
+
+
+#[tauri::command]
+pub async fn enable_user(user_id: String, system_id: String, update_time: String, state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
+  Ok(1)
+}
+
+
+#[tauri::command]
+pub async fn get_user_group_list(
+  user_id: String,
   organization_id: String,
+  system_id: String,
+  state: State<'_, DatabaseConnectionPool>) -> Result<UserGroupPair, String> {
+  Ok(UserGroupPair::default())
+}
+
+
+#[tauri::command]
+pub async fn get_user_role_list(
+  user_id: String,
+  organization_id: String,
+  system_id: String,
+  state: State<'_, DatabaseConnectionPool>) -> Result<UserRolePair, String> {
+  Ok(UserRolePair::default())
+}
+
+
+#[tauri::command]
+pub async fn add_user_role(
+  user_id: String,
+  authorized_org_role_rel_ids: Vec<String>,
+  last_modified_user_id: String,
+  system_id: String,
+  create_time: String,
+  state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
+  Ok(1)
 }
 
 #[tauri::command]
-pub async fn get_user_list_by_pagination(current_page: i64, page_size: i64, condition: UserCondition, state: State<'_, DatabaseConnectionPool>) -> Result<PaginationResult<UserVO>, String> {
+pub async fn get_user_list_by_pagination(
+  current_page: i64,
+  page_size: i64,
+  condition: UserCondition,
+  state: State<'_, DatabaseConnectionPool>) -> Result<PaginationResult<UserVO>, String> {
   if current_page == 0 || page_size == 0 {
     return Err(format!("分页参数不正确"));
   }
@@ -74,7 +97,7 @@ pub async fn get_user_list_by_pagination(current_page: i64, page_size: i64, cond
   pagination_result.current_page = current_page;
   pagination_result.page_size = page_size;
   let offset = (current_page - 1) * page_size;
-  let version_control_list_result = sqlx::query_as!(
+  let user_list_result = sqlx::query_as!(
         UserModel,
         r#"SELECT
         id,
@@ -93,21 +116,29 @@ pub async fn get_user_list_by_pagination(current_page: i64, page_size: i64, cond
         page_size,
         offset
   )
-    .fetch_all(&state.pool).map(UserVO::from)
+    .fetch_all(&state.pool)
     .await;
-  match version_control_list_result {
-    Ok(version_control_list) => {
-      let data_list = version_control_list.into_iter().map(async move |user_model: UserModel| {
-        let organization_ids = sqlx::query_as!(String,r#"SELECT organization_id FROM bos_user_orgainzation_relation where user_id = ?"#,user_model.user_id)
+  match user_list_result {
+    Ok(user_list) => {
+      let mut data_list = Vec::<UserVO>::new();
+      for user_model in user_list {
+        let organization_ids_result: Result<Vec<Option<String>>, Error> = sqlx::query_scalar!(r#"SELECT organization_id FROM bos_user_organization_relation where user_id = ?"#,user_model.user_id)
           .fetch_all(&state.pool).await;
-        let mut user_vo: UserVO = UserVO::from(user_model);
-        user_vo.organizations = organization_ids;
-        return user_vo;
-      }).collect();
+        match organization_ids_result {
+          Ok(organization_ids) => {
+            let mut user_vo: UserVO = UserVO::from(user_model);
+            user_vo.organizations = organization_ids;
+            data_list.push(user_vo);
+          }
+          Err(_error) => {
+            return Err(format!("查询用户机构信息异常"));
+          }
+        }
+      }
       pagination_result.data_list = data_list;
     }
     Err(_error) => {
-      return Err(format!("查询分页数据异常"));
+      return Err(format!("查询分页用户数据异常"));
     }
   }
   let total_result: Result<i64, Error> = sqlx::query_scalar(r#"SELECT count(*) FROM bos_user"#)
@@ -124,9 +155,14 @@ pub async fn get_user_list_by_pagination(current_page: i64, page_size: i64, cond
   Ok(pagination_result)
 }
 
-//
-//
-// #[tauri::command]
-// pub async fn add_user_group(UserGroupAddRequest request, state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
-//   return ResponseWrapper.apply(userService::addUserGroup, request);
-// }
+
+#[tauri::command]
+pub async fn add_user_group(
+  user_id: String,
+  authorized_org_group_rel_ids: Vec<String>,
+  last_modified_user_id: String,
+  system_id: String,
+  create_time: String,
+  state: State<'_, DatabaseConnectionPool>) -> Result<u64, String> {
+  Ok(1)
+}

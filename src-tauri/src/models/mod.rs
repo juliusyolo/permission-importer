@@ -1,13 +1,13 @@
 pub mod group;
 pub mod version_control;
-mod module;
-mod menu;
-mod organization;
-mod role;
-pub(crate) mod user;
-mod system;
-mod authorization;
-mod control;
-mod function;
+pub mod module;
+pub mod menu;
+pub mod organization;
+pub mod role;
+pub mod user;
+pub mod system;
+pub mod authorization;
+pub mod control;
+pub mod function;
 
 

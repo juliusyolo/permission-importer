@@ -11,13 +11,13 @@ export default {
     'role.authorize': 'authorize'
   },
   resources:{
-    'role.resources.list': 'list',
-    'role.resources.save': 'save',
-    'role.resources.edit': 'edit',
+    'role.resources.list': 'get_role_list_by_pagination',
+    'role.resources.save': 'add_role',
+    'role.resources.edit': 'edit_role',
     'role.resources.view': 'view',
-    'role.resources.delete': 'delete',
-    'role.resources.enable': 'enable',
-    'role.resources.disable': 'disable',
-    'role.resources.roleUser': 'roleUser',
+    'role.resources.delete': 'delete_role',
+    'role.resources.enable': 'enable_role',
+    'role.resources.disable': 'disable_role',
+    'role.resources.roleUser': 'get_role_user_list_by_pagination',
   }
 }

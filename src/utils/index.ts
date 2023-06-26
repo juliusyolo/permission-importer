@@ -6,7 +6,8 @@ export const remoteResourceCall = <T, D>(
   resourceCode: string,
   data: T
 ): Promise<any> => new Promise((resolve, reject) => {
-  invoke(resourceCode.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`), {
+  console.log("resourceCode:",resourceCode,"data:",data)
+  invoke(resourceCode, {
     ...data
   }).then((result) => {
     console.log(result)

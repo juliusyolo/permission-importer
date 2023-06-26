@@ -83,3 +83,20 @@ pub struct OrganizationRoleRelationModel {
   #[serde(rename = "updateTime", with = "serde_naive_datetime")]
   pub update_time: NaiveDateTime,
 }
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct OrganizationTreeVO{
+
+}
+#[derive(Serialize, Deserialize, Default)]
+pub struct OrganizationRolePair{
+
+}
+#[derive(Serialize, Deserialize, Default)]
+pub struct OrganizationGroupPair{
+
+}
+#[derive(Serialize, Deserialize, Default)]
+pub struct OrganizationUserVO{
+
+}

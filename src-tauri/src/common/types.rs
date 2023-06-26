@@ -15,3 +15,8 @@ pub struct PaginationResult<T> {
 pub struct DatabaseConnectionPool {
   pub(crate) pool: Pool<MySql>,
 }
+
+#[derive(Serialize, Deserialize, Default)]
+pub struct TreeResult<T>{
+  data:T,
+}
