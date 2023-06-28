@@ -1,9 +1,10 @@
 use serde::{Deserialize, Serialize};
+use sqlx::FromRow;
 use sqlx::types::chrono::NaiveDateTime;
 
 use crate::common::serde_naive_datetime;
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default,FromRow)]
 pub struct MenuModel {
   pub id: u64,
   #[serde(rename = "menuId")]
@@ -42,6 +43,7 @@ pub struct MenuModel {
   pub update_time: NaiveDateTime,
 }
 
+
 #[derive(Serialize, Deserialize, Default)]
 pub struct MenuFunctionModel {
   id: u64,
@@ -71,7 +73,7 @@ pub struct MenuFunctionModel {
   update_time: NaiveDateTime,
 }
 
-#[derive(Serialize, Deserialize, Default)]
+#[derive(Serialize, Deserialize, Default, Clone)]
 pub struct MenuTreeVO {
   #[serde(rename = "menuId")]
   pub menu_id: String,
@@ -101,7 +103,7 @@ pub struct MenuTreeVO {
   pub menu_component: Option<String>,
   #[serde(rename = "updateTime", with = "serde_naive_datetime")]
   pub update_time: NaiveDateTime,
-  pub children: Vec<MenuTreeVO>,
+  pub children: Option<Vec<MenuTreeVO>>,
   #[serde(rename = "isLeaf")]
   pub is_leaf: bool,
   #[serde(rename = "lastModifiedUserId")]
@@ -125,7 +127,7 @@ impl From<MenuModel> for MenuTreeVO {
       menu_path: value.menu_path,
       menu_component: value.menu_component,
       update_time: value.update_time,
-      children: vec![],
+      children: None,
       is_leaf: value.sub_menu_count == 0,
       last_modified_user_id: value.last_modified_user_id,
     }

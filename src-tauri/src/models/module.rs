@@ -54,9 +54,9 @@ impl From<ModuleModel> for ModuleVO {
 #[derive(Serialize, Deserialize, Default)]
 pub struct ModuleCondition {
   #[serde(rename = "moduleName")]
-  module_name: Option<String>,
+  pub module_name: Option<String>,
   #[serde(rename = "moduleStatus")]
-  module_status: Option<String>,
+  pub module_status: Option<String>,
   #[serde(rename = "systemId")]
-  system_id: String,
+  pub system_id: String,
 }
