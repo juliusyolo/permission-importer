@@ -1387,7 +1387,10 @@ export default defineComponent({
     const onFunctionPageChange = (currentPage: number) => {
       fetchFunctionData({
         ...basePagination,
-        condition: paramWrapper(functionFormModel.value),
+        condition: {
+          ...paramWrapper(functionFormModel.value),
+          moduleId: moduleExpandedRowKeys.value[0],
+        },
         currentPage,
       });
     };
@@ -1396,7 +1399,10 @@ export default defineComponent({
       basePagination.pageSize = pageSize;
       fetchFunctionData({
         ...basePagination,
-        condition: paramWrapper(functionFormModel.value),
+        condition: {
+          ...paramWrapper(functionFormModel.value),
+          moduleId: moduleExpandedRowKeys.value[0],
+        },
         currentPage: basePagination.current,
       });
     };
@@ -1987,7 +1993,7 @@ export default defineComponent({
         'global.clipRule.options.idCard': '身份证件',
         'global.clipRule.options.email': '电子邮件',
         'global.clipRule.options.phone': '电话手机',
-        'global.clipRule.options.other': '其他',
+        'global.clipRule.options.other': 'c',
         'menu.system-management.module': '模块管理',
         'module.form.query.name': '模块查询',
         'module.form.name': '模块名称',

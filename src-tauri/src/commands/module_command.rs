@@ -116,9 +116,8 @@ pub async fn get_module_list_by_pagination(
         offset
         ).fetch_all(&state.pool)
         .await;
-    }else {  }
-  }else {
-    module_list_result = sqlx::query_as!(
+    }else {
+      module_list_result = sqlx::query_as!(
         ModuleModel,
         r#"SELECT
         bm.id as id,
@@ -134,10 +133,29 @@ pub async fn get_module_list_by_pagination(
         condition.module_status.unwrap(),
         page_size,
         offset
+        ).fetch_all(&state.pool)
+        .await;
+    }
+  }else {
+    module_list_result = sqlx::query_as!(
+        ModuleModel,
+        r#"SELECT
+        bm.id as id,
+        module_id,
+        module_name,
+        module_remark,
+        module_status,
+        bm.last_modified_user_id as last_modified_user_id,
+        bm.create_time as create_time,
+        bm.update_time as update_time
+        from bos_module bm left join bos_system_belong_relation bsbr on bm.MODULE_ID = bsbr.BELONG_RESOURCE_ID where bsbr.SYSTEM_ID = ? and bsbr.BELONG_RESOURCE_TYPE = '3' ORDER BY bm.UPDATE_TIME desc LIMIT ? OFFSET ?"#,
+        condition.system_id,
+        page_size,
+        offset
       ).fetch_all(&state.pool)
       .await;
   }
-  let module_list = module_list_result.map_err(|err| format!("查询分页用户数据异常: {}", err))?;
+  let module_list = module_list_result.map_err(|err| format!("查询模块分页数据异常: {}", err))?;
   pagination_result.data_list = module_list.into_iter().map(ModuleVO::from).collect();
   let total_result: Result<i64, Error> = sqlx::query_scalar!(r#"SELECT count(*) FROM bos_module"#).fetch_one(&state.pool).await;
   let total = total_result.map_err(|err| format!("查询模块总数异常: {}", err))?;

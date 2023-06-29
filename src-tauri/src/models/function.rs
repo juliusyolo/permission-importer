@@ -12,21 +12,13 @@ pub struct FunctionModel {
   #[serde(rename = "functionName")]
   pub function_name: String,
   #[serde(rename = "functionRemark")]
-  pub function_remark: String,
+  pub function_remark: Option<String>,
   #[serde(rename = "moduleId")]
   pub module_id: String,
-  #[serde(rename = "moduleName")]
-  pub module_name: String,
-  #[serde(rename = "functionUrl")]
-  pub function_url: String,
-  #[serde(rename = "functionIcon")]
-  pub function_icon: String,
   #[serde(rename = "functionOrder")]
-  pub function_order: String,
+  pub function_order: Option<i32>,
   #[serde(rename = "functionStatus")]
-  pub function_status: String,
-  #[serde(rename = "controlPoints")]
-  control_points: Vec<ControlPointModel>,
+  pub function_status: Option<String>,
   #[serde(rename = "lastModifiedUserId")]
   pub last_modified_user_id: String,
   #[serde(rename = "createTime", with = "serde_naive_datetime")]
@@ -36,7 +28,39 @@ pub struct FunctionModel {
 }
 
 #[derive(Serialize, Deserialize, Default)]
-pub struct FunctionVO {}
+pub struct FunctionVO {
+  #[serde(rename = "functionId")]
+  pub function_id: String,
+  #[serde(rename = "functionName")]
+  pub function_name: String,
+  #[serde(rename = "functionRemark")]
+  pub function_remark: Option<String>,
+  #[serde(rename = "moduleId")]
+  pub module_id: String,
+  #[serde(rename = "functionOrder")]
+  pub function_order: Option<i32>,
+  #[serde(rename = "functionStatus")]
+  pub function_status: Option<String>,
+  #[serde(rename = "lastModifiedUserId")]
+  pub last_modified_user_id: String,
+  #[serde(rename = "updateTime", with = "serde_naive_datetime")]
+  pub update_time: NaiveDateTime,
+}
+
+impl From<FunctionModel> for FunctionVO {
+  fn from(value: FunctionModel) -> Self {
+    FunctionVO {
+      function_id: value.function_id,
+      function_name: value.function_name,
+      function_remark: value.function_remark,
+      module_id: value.module_id,
+      function_order: value.function_order,
+      function_status: value.function_status,
+      last_modified_user_id: value.last_modified_user_id,
+      update_time: value.update_time,
+    }
+  }
+}
 
 #[derive(Serialize, Deserialize, Default)]
 pub struct ModuleFunctionCondition {
@@ -51,11 +75,9 @@ pub struct ModuleFunctionCondition {
 #[derive(Serialize, Deserialize, Default)]
 pub struct FunctionCondition {
   #[serde(rename = "moduleId")]
-  module_id: String,
+  pub module_id: String,
   #[serde(rename = "functionName")]
-  function_name: String,
-  #[serde(rename = "functionUrl")]
-  function_url: String,
+  pub function_name: Option<String>,
   #[serde(rename = "functionStatus")]
-  function_status: String
+  pub function_status: Option<String>,
 }

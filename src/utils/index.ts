@@ -60,15 +60,15 @@ export const methodGetter = () => {
 export const dataAuthorizationGetter = () => {
   return [
     {
-      label: 'global.authorization.options.currentOrganization',
+      label: '本机构',
       value: '1',
     },
     {
-      label: 'global.authorization.options.currentSubOrganization',
+      label: '本机构及下级机构',
       value: '2',
     },
     {
-      label: 'global.authorization.options.selfCurrentOrganization',
+      label: '本人及本机构',
       value: '3',
     },
   ];
@@ -77,27 +77,27 @@ export const dataAuthorizationGetter = () => {
 export const clipRuleGetter = () => {
   return [
     {
-      label: 'global.clipRule.options.name',
+      label: '客户姓名',
       value: '1',
     },
     {
-      label: 'global.clipRule.options.bankCard',
+      label: '银行卡号',
       value: '2',
     },
     {
-      label: 'global.clipRule.options.idCard',
+      label: '身份证件',
       value: '3',
     },
     {
-      label: 'global.clipRule.options.email',
+      label: '电子邮件',
       value: '4',
     },
     {
-      label: 'global.clipRule.options.phone',
+      label: '电话手机c',
       value: '5',
     },
     {
-      label: 'global.clipRule.options.other',
+      label: '电话手机',
       value: '6',
     },
   ];
